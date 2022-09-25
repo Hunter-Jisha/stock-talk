@@ -3,7 +3,7 @@
 	"version": "0.0.1",
 	"private": true,
 	"scripts": {
-		"dev": "vite dev",
+		"dev": "vite dev --host",
 		"build": "vite build",
 		"preview": "vite preview",
 		"lint": "eslint ."
@@ -22,6 +22,7 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"appwrite": "^10.1.0"
+		"appwrite": "^10.1.0",
+		"graphql-request": "^5.0.0"
 	}
 }

@@ -1,0 +1,17 @@
+{
+    "short_name": "Stock Talk",
+    "name": "Stock Talk",
+    "icons": [
+      {
+        "src": "/app-icon.png",
+        "type": "image/png",
+        "sizes": "512x512"
+      }
+    ],
+    "start_url": "/home",
+    "background_color": "#F5F5F4",
+    "display": "standalone",
+    "scope": "/",
+    "theme_color": "#F5F5F4",
+    "description": "Stock strategy platform"
+}

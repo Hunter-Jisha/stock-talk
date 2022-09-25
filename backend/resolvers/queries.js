@@ -6,5 +6,23 @@ export default
     session: async (parent, args) =>
     {
         return await db.session.findUniqueOrThrow({where:{id: args.id}})
+    },
+    allStocks: async (parent, args) =>
+    {
+        return await db.stock.findMany({})
+    },
+    searchForUserByName: async (parent, args) =>
+    {
+        return await db.user.findMany(
+            {
+                where:
+                {
+                    username:
+                    {
+                        contains: args.name
+                    }
+                }
+            }
+        )
     }
 }

@@ -8,6 +8,58 @@ datasource db {
 }
 
 model User {
+  username String
   email String @id
   password String
+  sessions Session[]
+  strategies Strategy[]
+}
+
+model Session {
+  id String @id @default(uuid())
+  user User @relation(fields: [userId], references: [email])
+  userId String
+}
+
+model Strategy {
+  id Int @id @default(autoincrement())
+  name String
+
+  owner User @relation(fields: [ownerId], references: [email])
+  ownerId String
+
+  transactions Transaction[]
+}
+
+model Transaction {
+  id Int @id @default(autoincrement())
+  stock Stock @relation(fields: [stockId], references: [ticker])
+  stockId String
+
+  percent Int
+
+  buyDateTime DateTime
+  sellDateTime DateTime
+
+  strategy Strategy @relation(fields: [strategyId], references: [id])
+  strategyId Int
+  
+  buyPrice Float?
+  sellPrice Float?
+}
+
+model Stock {
+  ticker String @id
+  transactions Transaction[]
+  pricePoints PricePoint[]
+  currentPrice Float @default(0)
+}
+
+model PricePoint {
+  price Float
+  dateTime Float
+  stock Stock @relation(fields: [stockId], references: [ticker])
+  stockId String
+
+  @@id([dateTime, stockId])
 }

@@ -1,0 +1,7 @@
+-- AlterTable
+ALTER TABLE "Strategy" ADD COLUMN     "overallGainLoss" DOUBLE PRECISION NOT NULL DEFAULT 0;
+
+-- AlterTable
+ALTER TABLE "Transaction" ADD COLUMN     "buyPrice" DOUBLE PRECISION,
+ADD COLUMN     "gainLoss" DOUBLE PRECISION NOT NULL DEFAULT 0,
+ADD COLUMN     "sellPrice" DOUBLE PRECISION;
