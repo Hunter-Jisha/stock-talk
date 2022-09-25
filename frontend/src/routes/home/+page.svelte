@@ -4,6 +4,8 @@
     import { request, gql } from 'graphql-request'
     import Form from "$lib/Form.svelte"
     import StrategyCard from "../../lib/StrategyCard.svelte";
+    import Loader from "../../lib/Loader.svelte";
+    import {message} from "$lib/ErrorMessage.js"
 
     var nameSeachQuery = ""
 
@@ -12,6 +14,8 @@
     var feed = []
 
     var exploreRandomProfiles = true
+
+    var loaded = false
 
     onMount(() => 
     {
@@ -51,6 +55,11 @@
             .then((data) => 
             {
                 feed = [].concat.apply([], data.session.user.following.map((following) => following.following.strategies));
+                loaded = true
+            })
+            .catch((error) =>
+            {
+                message.set(error.message)
             })
         }
     })
@@ -70,13 +79,20 @@
             {
                 seachedUsers = response.searchForUserByName
             })
+            .catch((error) =>
+            {
+                message.set(error.message)
+            })
         }
     }
 </script>
 
 <MenuWrapper>
-    <div class="w-full h-full flex flex-row gap-2 md:p-4 bg-stone-100">
-        <div class="w-1/2 h-full flex flex-col gap-2">
+    <Loader bind:loaded={loaded}>
+
+    </Loader>
+    <div class="w-full h-full flex flex-row gap-2 md:p-4 bg-stone-100 justify-center">
+        <div class="w-full md:w-1/2 h-full flex flex-col gap-2">
             <div class="flex flex-row w-full px-4 py-2t justify-between items-center">
                 <p class="font-bold text-4xl text-sky-400">StockTalk</p>
             </div>
@@ -89,8 +105,8 @@
                 </svg>
 
                 {#if seachedUsers.length != 0}
-                    <div class="absolute px-4 left-0 -bottom-18 w-full">
-                        <div class="w-full flex flex-col bg-white rounded-xl p-2 shadow-md">
+                    <div class="absolute translate-y-2 px-4 left-0 -bottom-18 w-full">
+                        <div class="z-20 w-full flex flex-col bg-white rounded-xl p-2 shadow-md">
                             {#each seachedUsers as user}
                                 <button on:click={() => window.location.href = `/profile/${user.email}`} class="hover:bg-stone-100 rounded-xl p-2 w-full h-12 flex flex-row items-center gap-4">
                                     <div class="flex items-center justify-center rounded-full h-full aspect-square bg-sky-400 text-white font-bold text-lg">
@@ -107,7 +123,7 @@
     
             {#if exploreRandomProfiles}
                 <div class="w-full flex flex-col">
-                    <div class="flex flex-row w-full justify-between items-center px-4">
+                    <div class="flex flex-row h-10 w-full justify-between items-center px-4">
                         <p class="text-stone-500 text-md">Explore random profiles</p>
         
                         <button on:click={() => exploreRandomProfiles = false} class="h-full text-stone-500 p-0.5">

@@ -1,1 +1,8 @@
-<h1 class="text-red-500">hello world</h1>
+<script>
+    import { onMount } from "svelte/types/runtime/internal/lifecycle";
+
+    onMount(() =>
+    {
+        window.location.href = "/login"
+    })
+</script>

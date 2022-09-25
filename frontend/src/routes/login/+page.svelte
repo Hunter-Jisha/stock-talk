@@ -2,6 +2,7 @@
     import Form from "$lib/Form.svelte"
     import {onMount} from "svelte"
     import { request, gql } from 'graphql-request'
+    import {message} from "$lib/ErrorMessage.js"
 
     var registerMode = false
 
@@ -25,6 +26,10 @@
             window.localStorage.setItem("sessionId", data.register.id)
             window.location.href = "/profile"
         })
+        .catch((error) =>
+        {
+            message.set(error.message)
+        })
     }
 
     async function login(data)
@@ -38,6 +43,10 @@
         {
             window.localStorage.setItem("sessionId", data.login.id)
             window.location.href = "/profile"
+        })
+        .catch((error) =>
+        {
+            message.set(error.message)
         })
     }
 </script>
@@ -63,7 +72,7 @@
                 <input class="w-full h-14 md:h-12 rounded-xl bg-sky-400 text-white font-bold text-xl" type="submit" value="Register">
             </Form>
 
-            <p class="text-stone-500">Don't have an account? <a href="#register" on:click={() => registerMode = false} class="text-sky-400 font-bold">Sign In</a></p>
+            <p class="text-stone-500">Don't have an account? <a href="/login" on:click={() => registerMode = false} class="text-sky-400 font-bold">Sign In</a></p>
         {:else}
             <Form handle={login} class="w-full flex flex-col gap-2">
                 <input class="w-full h-14 md:h-12 bg-stone-100 rounded-xl text-lg px-4 text-stone-700" type="email" name="email" placeholder="Email">
@@ -71,7 +80,7 @@
                 <input class="w-full h-14 md:h-12 rounded-xl bg-sky-400 text-white font-bold text-xl" type="submit" value="Login">
             </Form>
 
-            <p class="text-stone-500">Already have an account? <a href="/login" on:click={() => registerMode = true} class="text-sky-400 font-bold">Sign Up</a></p>
+            <p class="text-stone-500">Already have an account? <a href="#register" on:click={() => registerMode = true} class="text-sky-400 font-bold">Sign Up</a></p>
         {/if}
     </div>
 </div>

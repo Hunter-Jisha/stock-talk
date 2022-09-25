@@ -146,22 +146,6 @@ export default
                     }
                 }
             )
-            await db.pricePoint.create(
-                {
-                    data:
-                    {
-                        price: args.prices[index],
-                        dateTime: Math.floor(Date.now() / 60000) * 60000,
-                        stock:
-                        {
-                            connect:
-                            {
-                                ticker: ticker
-                            }
-                        }
-                    }
-                }
-            )
 
             await db.transaction.updateMany(
                 {

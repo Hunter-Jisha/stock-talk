@@ -2,6 +2,7 @@
     import MenuWrapper from "../../lib/MenuWrapper.svelte";
     import { request, gql } from 'graphql-request'
     import {onMount} from "svelte/internal"
+    import {message} from "$lib/ErrorMessage.js"
 
     var name = "Untitled"
 
@@ -15,6 +16,10 @@
         .then((data) => 
         {
             tickers = data.allStocks.map((stock) => stock.ticker)
+        })
+        .catch((error) =>
+        {
+            message.set(error.message)
         })
     })
 
@@ -40,9 +45,13 @@
                 id
             }
         }`)
-        .then((data) => 
+        .then(() => 
         {
             window.location.href = "/profile"
+        })
+        .catch((error) =>
+        {
+            message.set(error.message)
         })
     }
 
@@ -71,16 +80,20 @@
 </script>
 
 <MenuWrapper>
-    <div class="w-full h-full flex items-center justify-center bg-stone-200">
-        <div class="w-[40rem] flex flex-col p-6 gap-8 rounded-2xl bg-white shadow">
-            <input class="w-full h-12 text-2xl text-stone-700 font-bold focus:bg-stone-100 rounded-xl px-4" placeholder="Name" type="text" bind:value={name}>
+    <div class="w-full h-full flex flex-col gap-4 items-center justify-center bg-stone-100">
+        <p class="text-2xl text-stone-500">New Strategy</p>
+        <div class="w-full md:w-[40rem] flex flex-col p-6 gap-4 rounded-2xl bg-white shadow">
+            <div class="flex flex-col w-full gap-1">
+                <p class="text-md text-stone-700">Name</p>
+                <input class="w-full h-12 text-2xl text-stone-700 font-bold bg-stone-100 rounded-xl px-4" placeholder="Name" type="text" bind:value={name}>
+            </div>
 
             <div class="w-full flex flex-col gap-8 max-h-96 overflow-y-auto">
                 {#each transactions as transaction, index}
                     <div class="flex flex-col gap-4 p-8 group rounded-2xl">
                         <div class="flex justify-between flex-row gap-4 items-center">
                             <div class="flex flex-col text-xl text-stone-500 gap-2">
-                                <p>Stock</p>
+                                <p class="text-sm md:text-xl">Stock</p>
                                 <select class="px-2 h-12 rounded-lg bg-stone-100 text-stone-700 w-24" bind:value={transaction.ticker} >
                                     {#each tickers as ticker}
                                         <option>{ticker}</option>
@@ -89,7 +102,7 @@
                             </div>
 
                             <div class="flex flex-col text-xl text-stone-500 gap-2">
-                                <p>Percent of Investment</p>
+                                <p class="text-sm md:text-xl">Percent of Investment</p>
                                 <div class="flex flex-row items-center gap-2">
                                     <input class="px-2 h-12 rounded-lg bg-stone-100 text-stone-700 w-16" bind:value={transaction.percent} type="text" placeholder="0">
                                     <p class="text-2xl text-stone-700">%</p>
@@ -105,12 +118,12 @@
 
                         <div class="flex flex-row gap-4 justify-between">
                             <div class="flex flex-col gap-2">
-                                <p class="text-xl text-stone-500">Purchase Date</p>
+                                <p class="text-sm md:text-xl text-stone-500">Purchase Date</p>
                                 <input bind:value={transaction.buyDateTime} class="h-12 text-sm border-b-2 border-stone-500 pb-1 focus:border-sky-400" type="datetime-local">
                             </div>
 
                             <div class="flex flex-col gap-2">
-                                <p class="text-xl text-stone-500">Hold Time</p>
+                                <p class="text-sm md:xtext-xl text-stone-500">Hold Time</p>
                                 <div class="flex flex-row h-12 gap-2">
                                     <input class="h-full text-xl w-16 bg-stone-100 rounded-lg px-2 text-stone-700" bind:value={transaction.holdTimeNumber} placeholder="0" type="number">
                                     <select bind:value={transaction.holdTimeUnit} class="h-full w-24 bg-stone-100 rounded-lg px-2 text-stone-700">
@@ -135,8 +148,8 @@
             </button>
 
             <div class="flex flex-row justify-between h-10">
-                <button class="h-full px-6 rounded-lg text-lg font-bold text-red-400">Cancel</button>
-                <button on:click={createStrategy} class="h-full px-6 rounded-lg text-lg font-bold text-white bg-sky-400">Create</button>
+                <button on:click={() => window.location.href = "/profile"} class="h-full px-6 rounded-lg text-lg font-bold text-red-400 hover:bg-red-400 hover:text-white">Cancel</button>
+                <button on:click={createStrategy} class="h-full px-6 rounded-lg text-lg font-bold text-white bg-sky-400 hover:bg-sky-500">Create</button>
             </div>
         </div>
     </div>

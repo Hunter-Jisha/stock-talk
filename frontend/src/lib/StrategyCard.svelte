@@ -43,16 +43,16 @@
     <div class="flex flex-row items-center gap-4">
         <p class="text-stone-500 font-bold text-xl">{name}</p>
         <div class="flex flex-row items-center gap-1 ml-auto">
-            {#if gainLoss >= 0}
+            {#if gainLoss > 0}
                 <svg class="w-6 h-6 text-green-300" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M17.6568 8.96219L16.2393 10.3731L12.9843 7.10285L12.9706 20.7079L10.9706 20.7059L10.9843 7.13806L7.75404 10.3532L6.34314 8.93572L12.0132 3.29211L17.6568 8.96219Z" fill="currentColor" />
                 </svg>
-            {:else}
+            {:else if gainLoss < 0}
                 <svg class="w-6 h-6 text-red-300" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M11.0001 3.67157L13.0001 3.67157L13.0001 16.4999L16.2426 13.2574L17.6568 14.6716L12 20.3284L6.34314 14.6716L7.75735 13.2574L11.0001 16.5001L11.0001 3.67157Z" fill="currentColor" />
                 </svg>
             {/if}
-            <p class="ml-auto font-bold text-3xl {gainLoss >= 0 ? "text-green-300" : "text-red-300"}">{gainLoss.toFixed(1)}%</p>
+            <p class="ml-auto font-bold text-3xl {gainLoss > 0 ? "text-green-300" : gainLoss < 0 ? "text-red-300": "text-stone-500"}">{gainLoss.toFixed(1)}%</p>
         </div>
 
         {#if ownMode}
