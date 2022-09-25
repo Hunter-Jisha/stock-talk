@@ -1,0 +1,49 @@
+version: "3.8"
+
+services:
+  backend:
+    container_name: backend
+    environment:
+      DATABASE_URL: postgresql://user:password@database:5432/database?schema=public
+      SECRET_KEY: powemrhcp9813hrc9nbhr8c29ry90crmy
+    build:
+      context: ./backend
+    ports:
+      - 8002:8000
+
+  fakepollingserver:
+    container_name: fakepollingserver
+    environment:
+      BACKEND_URL: http://backend:8000/api
+      SECRET_KEY: powemrhcp9813hrc9nbhr8c29ry90crmy
+    build:
+      context: ./fakePollingServer
+    ports:
+      - 8009:8000
+    depends_on:
+      - backend
+
+  database:
+    image: postgres
+    restart: always
+    environment:
+      - POSTGRES_DB=database
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=password
+
+  pgweb:
+    ports:
+      - 8001:8081
+    image: sosedoff/pgweb
+    restart: always
+    environment:
+      - DATABASE_URL=postgres://user:password@database:5432/database?sslmode=disable
+  
+  frontend:
+    container_name: frontend
+    environment:
+      BACKEND_URL: http://backend:8000/api
+    build:
+      context: ./frontend
+    ports:
+      - 8004:8000
