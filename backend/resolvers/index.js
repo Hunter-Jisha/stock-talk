@@ -5,6 +5,7 @@ import User from "./user.js"
 import Strategy from "./strategy.js"
 import Transaction from "./transaction.js"
 import Stock from "./stock.js"
+import Follow from "./follow.js"
 
 export default
 {
@@ -14,5 +15,6 @@ export default
     User,
     Strategy,
     Transaction,
-    Stock
+    Stock,
+    Follow
 }

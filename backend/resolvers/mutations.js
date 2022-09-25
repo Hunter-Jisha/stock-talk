@@ -225,5 +225,86 @@ export default
         await db.$transaction([deleteTransactions, deleteStrategy])
 
         return true
+    },
+    follow: async (parent, args) =>
+    {
+        //find session from db
+        const session = await db.session.findUniqueOrThrow(
+            {
+                where:
+                {
+                    id: args.sessionId
+                }
+            }
+        )
+
+        const user = await db.user.findUniqueOrThrow(
+            {
+                where:
+                {
+                    email: args.email
+                }
+            }
+        )
+
+        await db.follows.create(
+            {
+                data:
+                {
+                    follower: 
+                    {
+                        connect:
+                        {
+                            email: session.userId
+                        }
+                    },
+                    following: 
+                    {
+                        connect:
+                        {
+                            email: user.email
+                        }
+                    }
+                }
+            }
+        )
+
+        return true
+    },
+    unfollow: async (parent, args) =>
+    {
+        //find session from db
+        const session = await db.session.findUniqueOrThrow(
+            {
+                where:
+                {
+                    id: args.sessionId
+                }
+            }
+        )
+
+        const user = await db.user.findUniqueOrThrow(
+            {
+                where:
+                {
+                    email: args.email
+                }
+            }
+        )
+
+        await db.follows.delete(
+            {
+                where:
+                {
+                    followerId_followingId: 
+                    {
+                        followerId: session.userId,
+                        followingId: user.email
+                    }
+                }
+            }
+        )
+
+        return true
     }
 }

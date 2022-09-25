@@ -4,9 +4,10 @@ const typeDefs = gql`
   type Query 
   {
     ping: String!
-    session(id: String!): Session!
+    session(id: String!): Session!   
     allStocks(recordTimeValue: Int, recordTimeUnit: String, intervalUnit: String): [Stock]!
-    searchForUserByName(name: String!): [User]
+    searchForUserByName(name: String!): [User]!
+    getUserByEmail(email: String!): User!
   }
 
   type Mutation 
@@ -16,6 +17,8 @@ const typeDefs = gql`
     createStrategy(sessionId: String!, strategy: InputStrategy!): Strategy
     updatePricing(secretKey: String!, tickers: [String]!, prices: [Float]!): Boolean!
     deleteStrategy(sessionId: String!, id: Int!): Boolean!
+    follow(sessionId: String!, email: String!): Boolean
+    unfollow(sessionId: String!, email: String!): Boolean
   }
 
   type User 
@@ -23,6 +26,14 @@ const typeDefs = gql`
     email: String!
     username: String!
     strategies: [Strategy]!
+    following: [Follow]!
+    followers: [Follow]!
+  }
+
+  type Follow
+  {
+    follower: User!
+    following: User!
   }
 
   type Session 

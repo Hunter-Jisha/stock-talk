@@ -19,8 +19,20 @@ export default
                 {
                     username:
                     {
-                        contains: args.name
+                        contains: args.name,
+                        mode: 'insensitive'
                     }
+                }
+            }
+        )
+    },
+    getUserByEmail: async (parent, args) =>
+    {
+        return await db.user.findUniqueOrThrow(
+            {
+                where:
+                {
+                    email: args.email
                 }
             }
         )

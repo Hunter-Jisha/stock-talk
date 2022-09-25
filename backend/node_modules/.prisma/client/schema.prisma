@@ -13,6 +13,17 @@ model User {
   password String
   sessions Session[]
   strategies Strategy[]
+  following Follows[] @relation("following")
+  followers Follows[] @relation("follower")
+}
+
+model Follows {
+  follower User @relation("follower", fields: [followerId], references: [email])
+  followerId String
+  following User @relation("following", fields: [followingId], references: [email])
+  followingId String
+
+  @@id([followerId, followingId])
 }
 
 model Session {

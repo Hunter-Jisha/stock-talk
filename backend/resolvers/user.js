@@ -12,5 +12,27 @@ export default
                 }
             }
         ).strategies()
+    },
+    following: async(parent) =>
+    {
+        return await db.follows.findMany(
+            {
+                where:
+                {
+                    followerId: parent.email
+                }
+            }
+        )
+    },
+    followers: async(parent) =>
+    {
+        return await db.follows.findMany(
+            {
+                where:
+                {
+                    followingId: parent.email
+                }
+            }
+        )
     }
 }

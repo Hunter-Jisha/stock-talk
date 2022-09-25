@@ -1,25 +1,13 @@
-<script>
-    import {onMount} from "svelte/internal"
-
-    onMount(() => 
-    {
-        if(!window.localStorage.getItem("sessionId"))
-        {
-            window.location.href = "/login"
-        }
-    })
-</script>
-
 <svelte:head>
     <meta name="theme-color" content="#F5F5F4">
 </svelte:head>
 
-<div class="w-screen h-screen overflow-hidden bg-stone-100 flex flex-col md:flex-row pb-20 md:pb-0 md:pl-20">
+<div class="w-screen h-screen bg-stone-100 flex flex-col md:flex-row pb-20 md:pb-0 md:pl-20">
     <div class="z-20 p-2 md:p-4 fixed bottom-0 items-start left-0 w-full h-24 md:h-full md:w-20 bg-sky-500 flex gap-4 flex-row md:flex-col overflow-hidden md:hover:w-64 transition-all justify-around md:justify-start">
         <!--Top Logo--> 
         <button class="hidden md:flex mb-16 flex-shrink-0 w-full flex-row items-center gap-4 text-white">
             <div class="w-12 aspect square flex-shrink-0">
-                <img class="flex-shrink-0 w-12 h-12" src="logo-white.png" alt="logo">
+                <img class="flex-shrink-0 w-12 h-12" src="/logo-white.png" alt="logo">
             </div>
 
             <p class="text-xl font-bold whitespace-nowrap">StockTalk</p>
@@ -53,7 +41,5 @@
         </button>
     </div>
 
-    <div class="w-full h-full overflow-hidden">
-        <slot/>
-    </div>
+    <slot/>
 </div>
